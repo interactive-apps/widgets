@@ -1,0 +1,11 @@
+<li class="list-group-item" *ngIf="widget.name">
+  <div class="row">
+    <div class="col-md-8">
+      <h5 title="{{widget.description}}">{{ widget.name}} </h5>
+    </div>
+    <div class="col-md-4">
+      <a (click)="addThisWidget(widget.dashboardItemId, widget.name, widget.description, widget.body)" class="btn" title="Add this widget to this dashboard item">Add</a>
+      <a class="btn" (click)="previewThisWidget(widget.dashboardItemId)">Preview</a>
+    </div>
+  </div>
+</li>

@@ -7,9 +7,9 @@
     }
   },
   "appType": "DASHBOARD_WIDGET",
-  "name": "Score Card Widget",
+  "name": "Observatory Widget",
   "version": "1.0.0",
-  "description": "The app that let you view score card in your DHIS 2 dashboards",
+  "description": "With the app you can place a widget in dhis2 dashboard",
   "developer": {
     "name": "HISP Tanzania",
     "email": "info@hisptanzania.org",
@@ -19,5 +19,5 @@
   "icons": {
     "48": "icon.png"
   },
-  "manifest_generated_at": "Wed Feb 07 2017 14:45:20 GMT+0300 (EAT)"
+  "manifest_generated_at": "TUE MAY 05 2018 14:45:20 GMT+0300 (EAT)"
 }

@@ -1,0 +1,114 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12" *ngIf="isCurrentWidgetSet === true">
+      <div id="widget" *ngIf="currentDashId">
+        <app-widget [dashItemId]="currentDashId"></app-widget>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="isCurrentWidgetSet === false">
+      <div class="container">
+        <div id="top-part">
+          <h4>Welcome to text widget design</h4>
+          <h5>You can design your widgets in here and add them in your dashboard,
+            just like the way you add your saved favorites. Its simple and direct, go to the design part</h5>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-12" *ngIf="isCurrentWidgetSet === false">
+      <div class="container list-of-widgets">
+        <div *ngIf="pagedItems.length > 0">
+          <div class="col-md-12">
+            <div class="widget-list">
+              <h4 class="text-center">Available widgets</h4>
+                  <div id="widget-name" class="row">
+                    <div class="col-md-4"  *ngFor="let widget of pagedItems">
+                      <div class="card-summary" *ngIf="widget.name">
+                        <div class="card-block">
+                          <h5 class="card-title" title="{{widget.description}}">{{ widget.name}}</h5>
+                          <div class="separator-line"></div>
+                          <p class="card-text">{{ widget.description}}</p>
+                          <div class="btn-list">
+                            <a class="btn" (click)="addThisWidget(dashboardItemId, widget.name, widget.description, widget.body)" title="Add this widget to this dashboard item">Add</a>
+                            <a class="btn" (click)="previewThisWidget(widget.dashboardItemId, widget.name, widget.description, widget.body)">Preview</a>
+                            <a class="btn" (click)="editThisWidget(widget.dashboardItemId, widget.name, widget.description, widget.body)">Edit</a>
+                            <a class="btn" (click)="deleteWidget(widget.dashboardItemId, widget.name, widget.description, widget.body)">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)" class="btn">First</a>
+                  </li>
+                  <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACsSURBVFhH7dexCUJBFETRBc20AwVNLMFEq7AAK/mYmVqAFQh2oY1Yhpl6nxh8FqN1kVmYCyd42aQvuYaa4IDt+xJrhhueH2vIlI97YAmJ8nFhB4k8rjSPK0163BweV5LHleZxpUmPm0J2XHREf9weUnXoD7xiDJmGOMMjf80ja+WRtfLIWjU9cgSZPLJWTYwcIB95QYyX6dvIDaSKkSfEuDsWkGyF+Gvcn0rpBckylQoR6IfoAAAAAElFTkSuQmCC"></a>
+                  </li>
+                  <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="setPage(page)" class="btn">{{page}}</a>
+                  </li>
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAClSURBVFhH7ZWxCUJBEAVPDBVswkgzsQfbsAITO/hgZA8WYBlGNmMFCjqLHhgYLYe8gzcwsLxosi3mj8xwwD2OY1DjiM+PZ5SLPGANlIyc4AWlI6foyBY4shWObIUjW+HIVnTxFruOHKEMEXnF78gNyrDCG9a4By5Rgl9xW5TAcVkcl8VxWRyXxXFZHJdlgbJxwQll44IdRtwd5eIqa5y/T9MDpbwAGfGVAJbs2kIAAAAASUVORK5CYII="></a>
+                  </li>
+                  <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)" class="btn">Last</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="isCurrentWidgetSet === false">
+      <div class="container design">
+        <div id="design-part">
+          <div class="row">
+            <ul class="list-inline-item text-right" id="new-button">
+              <a (click)="emptyTheWidgetDetails(dashboardItemId)"  *ngIf="newButtonSet == true" class="btn float-right">New</a>
+            </ul>
+          </div>
+          <div class="card-part">
+            <div id="widget-body">
+              <form [formGroup]="angForm" novalidate>
+              <div class="form-control">
+                <input class="form-control" formControlName="name"  placeholder="provide the name" id="name">
+                <div *ngIf="angForm.controls['name'].invalid && (angForm.controls['name'].dirty || angForm.controls['name'].touched)" class="alert alert-danger">
+                  <div *ngIf="angForm.controls['name'].errors.required">
+                    Name is required.
+                  </div>
+                </div>
+                <br>
+                <textarea class="form-control" placeholder="provide the description" id="description"></textarea>
+              </div>
+              <div class="form-control">
+                <input id="ob_widget" class="form-control"  formControlName="widget" [(ngModel)]="widget" />
+                <!--<div *ngIf="angForm.controls['widget'].invalid && (angForm.controls['widget'].dirty || angForm.controls['widget'].touched)" class="alert alert-danger">-->
+                  <!--<div *ngIf="angForm.controls['widget'].errors.required">-->
+                    <!--Widget is required.-->
+                  <!--</div>-->
+                <!--</div>-->
+              </div><br>
+                <div *ngIf="dashboardItemId !== ''">
+                  <a type="button" (click)="postTheWidget(dashboardItemId)" *ngIf="editMode == false" class="btn">Post</a>
+                  <a type="button" (click)="saveTheWidget(dashboardItemIdToSave)" *ngIf="editMode == true" class="btn">Save</a>
+                  <a  *ngIf="contentPresent" (click)="showResults()" class="btn pull-right">See results</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="float-right">
+          <div class="flex-row" id="back-to-design">
+            <div class="p-2">
+              <a (click)="showDesignPart()" class="btn float-right">Go to design</a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div><div id="widget-results" class="container" [innerHtml]="result"></div><br></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
